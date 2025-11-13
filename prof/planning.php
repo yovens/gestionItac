@@ -49,7 +49,9 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
     <div class="logo">Prof</div>
     <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
     <a href="saisie_notes.php"><i class="fas fa-pen"></i> Saisie notes</a>
-    <a href="planning.php" class="active"><i class="fas fa-calendar"></i> Mon planning</a>
+      <a href="classes.php" ><i class="fas fa-users"></i> Mes classes</a>
+    <a href="examens.php" ><i class="fas fa-book"></i> Examens</a>
+    <a href="planning.php ><i class="fas fa-calendar"></i> Mon planning</a>
     <a href="profil.php"><i class="fas fa-users-cog"></i> Profil</a>
     <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
   </aside>
@@ -75,3 +77,9 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
 </div>
 </body>
 </html>
+
+
+
+
+
+

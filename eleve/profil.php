@@ -147,6 +147,11 @@ h2{margin-bottom:18px;font-weight:700;color:#fff;}
 .warning{color:#facc15;font-weight:600;}
 .cta{display:inline-block;margin-top:12px;background:linear-gradient(90deg,var(--accent-2),var(--accent-1));padding:10px 14px;border-radius:10px;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 8px 20px rgba(124,58,237,0.12);}
 @media(max-width:980px){.dashboard-container{grid-template-columns:1fr;padding:18px;gap:14px;}}
+
+.sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -155,12 +160,16 @@ h2{margin-bottom:18px;font-weight:700;color:#fff;}
 
 <div class="dashboard-container">
   <aside class="sidebar">
-    <div class="logo">ITAC</div>
+   <div class="logo">ITAC</div>
+    <div class="profile">
+     
+      <p>Étudiant • ITAC</p>
+    </div>
     <a href="dashboard.php">🏠 Tableau de bord</a>
     <a href="mes_notes.php">📚 Mes notes</a>
     <a href="mes_bulletins.php" class="active">📄 Mes bulletins</a>
-    <a href="paiements.php"><i class="fas fa-file-pdf"></i>  Paiements</a>
-        <a href="profil.php"><i class="fas fa-users-cog"></i> Profil</a>
+    <a href="paiements.php">💰 Paiements</a>
+    <a href="profil.php">⚙️ Profil</a>
     <a href="calendrier.php">📆 Calendrier</a>
     <a href="../logout.php">⤴️ Déconnexion</a>
   </aside>

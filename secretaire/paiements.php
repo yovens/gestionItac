@@ -9,6 +9,9 @@ if(!isset($_SESSION['user']) || $_SESSION['user']['role_id'] != 2){
     exit;
 }
 
+$nom    = $_SESSION['user']['nom'];
+$prenom = $_SESSION['user']['prenom'];
+$photo  = $_SESSION['user']['photo'] ?? "default.png";
 $success = '';
 $error = '';
 
@@ -67,7 +70,7 @@ $paiements = $pdo->query("
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secrétaire — Paiements | ITAC</title>
-    <link rel="stylesheet" href="/itac/assets/css/style.css">
+ 
 </head>
 <body>
 
@@ -75,7 +78,12 @@ $paiements = $pdo->query("
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-    <div class="logo">ITAC</div>
+       <div class="logo" style="color: #fff;">ITAC</div>
+     <div class="profile">
+      <img src="../uploads/<?=$photo?>" alt="photo">
+      <h3><?=$prenom." ".$nom?></h3>
+      <p>Secretaire</p>
+    </div>
     <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="inscriptions.php"><i class="fas fa-book"></i> Inscriptions</a>
     <a href="examens.php"><i class="fas fa-book"></i> Examens</a>
@@ -474,6 +482,10 @@ body{
     box-shadow:0 12px 30px rgba(0,0,0,0.25);
 }
 
+.sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 /* Dashboard liens rapides */
 .secretaire-dashboard{
     display:grid;

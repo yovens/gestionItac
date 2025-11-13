@@ -53,6 +53,11 @@ body{font-family:'Inter',sans-serif;background:#071024;color:#e6eef8;}
     .sidebar{width:100%;flex-direction:row;overflow-x:auto;}
     .sidebar a{margin:0 8px;}
 }
+
+.sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -61,11 +66,16 @@ body{font-family:'Inter',sans-serif;background:#071024;color:#e6eef8;}
 <div class="dashboard-container">
   <aside class="sidebar">
     <div class="logo">ITAC</div>
+    
+    <div class="profile">
+     
+      <p>Étudiant • ITAC</p>
+    </div>
     <a href="dashboard.php">🏠 Dashboard</a>
     <a href="mes_notes.php">📚 Mes notes</a>
     <a href="mes_bulletins.php">📄 Mes bulletins</a>
-    <a href="paiements.php"><i class="fas fa-file-pdf"></i> ---> Paiements</a>
-        <a href="profil.php"><i class="fas fa-users-cog"></i> --->Profil</a>
+    <a href="paiements.php">💰 Paiements</a>
+    <a href="profil.php">⚙️ Profil</a>
     <a href="calendrier.php" class="active">📆 Calendrier</a>
     <a href="../logout.php">⤴️ Déconnexion</a>
   </aside>

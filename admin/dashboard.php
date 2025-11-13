@@ -1,3 +1,6 @@
+
+
+
 <?php
 // admin/dashboard.php
 require_once __DIR__ . '/../includes/config.php';
@@ -88,7 +91,37 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
     border-radius:50%;
     border:3px solid var(--accent);
 }
-
+.cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.card {
+    flex: 1;
+    min-width: 200px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+.card i {
+    font-size: 28px;
+    color: var(--accent);
+}
+.card:hover {
+    background: var(--card-hover);
+    transform: translateY(-6px);
+}
+.sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -100,7 +133,12 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
 
 <div class="dashboard-container">
   <aside class="sidebar">
-    <div class="logo">ITAC</div>
+        <div class="logo" style="color: #fff;">ITAC</div>
+     <div class="profile">
+      <img src="../uploads/<?=$photo?>" alt="photo">
+      <h3><?=$prenom." ".$nom?></h3>
+      <p>Admin</p>
+    </div>
     <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="classes.php"><i class="fas fa-building"></i> Classes</a>
     <a href="matieres.php"><i class="fas fa-book"></i> Matières</a>
@@ -118,11 +156,17 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
             </div>
         </header>
     <h2>Tableau de bord Admin</h2>
-    <div class="cards">
-      <div class="card">Étudiants: <?=$total_students?></div>
-      <div class="card">Professeurs: <?=$total_profs?></div>
-      <div class="card">Classes: <?=$total_classes?></div>
+   <div class="cards">
+    <div class="card">
+        <i class="fas fa-user-graduate"></i> Étudiants: <?= $total_students ?>
     </div>
+    <div class="card">
+        <i class="fas fa-chalkboard-teacher"></i> Professeurs: <?= $total_profs ?>
+    </div>
+    <div class="card">
+        <i class="fas fa-school"></i> Classes: <?= $total_classes ?>
+    </div>
+</div>
 
     <div class="admin-dashboard">
       <a href="classes.php" class="card"><i class="fas fa-building"></i><br>Gérer Classes</a>
@@ -135,4 +179,3 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
 </div>
 </body>
 </html>
-

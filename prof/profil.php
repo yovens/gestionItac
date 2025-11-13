@@ -2,8 +2,7 @@
 session_start();
 require_once "../includes/config.php";
 
-// Vérifier que c’est bien un secrétaire connecté
-if (!isset($_SESSION['user']) || $_SESSION['user']['role_name'] !== 'professeur') {
+if (!isset($_SESSION['user']) || $_SESSION['user']['role_id'] != 3) {
     header("Location: ../index.php");
     exit;
 }
@@ -166,13 +165,16 @@ h2{
 <div class="dashboard-container">
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="logo">ITAC</div>
+     <div class="logo">ITAC</div>
     <div class="profile">
+      <img src="../uploads/<?=$photo?>" alt="photo">
       <h3><?=$prenom." ".$nom?></h3>
       <p>Professeur</p>
     </div>
     <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="saisie_notes.php"><i class="fas fa-pen"></i> Saisie des notes</a>
+      <a href="classes.php" ><i class="fas fa-users"></i> Mes classes</a>
+    <a href="examens.php" ><i class="fas fa-book"></i> Examens</a>
     <a href="planning.php"><i class="fas fa-calendar"></i> Planning</a>
     <a href="profil.php"><i class="fas fa-users-cog"></i> Profil</a>
     <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>

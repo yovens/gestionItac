@@ -1,10 +1,18 @@
 <?php
-// admin/utilisateurs.php
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/helpers.php';
 if (!isset($_SESSION['user']) || $_SESSION['user']['role_name'] !== 'admin') header('Location: ../index.php');
 
+$nom = $_SESSION['user']['nom'] ?? '';
+$prenom = $_SESSION['user']['prenom'] ?? '';
+$photo = $_SESSION['user']['photo'] ?? 'default.png'; 
+
 $roles = $pdo->query("SELECT * FROM roles")->fetchAll(PDO::FETCH_ASSOC);
+
+// ==== Compteurs pour les cartes ====
+$total_students = $pdo->query("SELECT COUNT(*) FROM users WHERE role_id = 3")->fetchColumn();
+$total_profs    = $pdo->query("SELECT COUNT(*) FROM users WHERE role_id = 2")->fetchColumn();
+$total_classes  = $pdo->query("SELECT COUNT(*) FROM classes")->fetchColumn();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['action'] === 'add') {
@@ -47,15 +55,95 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
 .f3{width:100px;height:100px;top:70%;left:40%;background:linear-gradient(90deg,#ffffff22,#00000000);animation-duration:18s;animation-delay:1s;}
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-25px) rotate(45deg);}}
 
+/* ===== Layout ===== */
 .dashboard-container{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:32px;position:relative;z-index:5;max-width:1300px;margin:0 auto;}
 .sidebar{background:rgba(20,20,40,0.85);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;border:1px solid rgba(255,255,255,0.05);}
 .sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
 .sidebar a{display:block;padding:12px 14px;margin:6px 0;border-radius:10px;color:var(--text-light);text-decoration:none;font-weight:600;transition:.3s;background:rgba(255,255,255,0.03);}
 .sidebar a.active, .sidebar a:hover{background:var(--accent);color:#000;font-weight:700;transform:translateX(4px);}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 
 .main-content{padding:28px;display:flex;flex-direction:column;gap:20px;}
 .main-content h2{text-align:center;color:var(--accent);margin-bottom:20px;}
+@media (max-width: 600px) {
+  .admin-dashboard .card i {
+    font-size: 30px;
+  }
+  .admin-dashboard .card {
+    padding: 16px;
+    font-size: 14px;
+  }
+}
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* Empêche le scroll horizontal */
+}
 
+.dashboard-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Permet le scroll horizontal seulement dans la table si trop large */
+  border-radius: 10px;
+}
+
+/* Table responsive */
+.table-container table {
+  width: 100%;
+  min-width: 600px; /* Empêche la table d’écraser les colonnes sur petits écrans */
+}
+
+/* Sidebar responsive : collapse sur mobile */
+@media (max-width: 900px) {
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-around;
+    border-radius: 0;
+    background: rgba(10,10,25,0.9);
+  }
+
+  .sidebar a {
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 14px;
+  }
+
+  .form-box form {
+    flex-direction: column;
+  }
+
+  .form-box input, .form-box select, .form-box button {
+    width: 100%;
+  }
+}
+
+/* ===== Cards ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:20px;}
+.cards .card{background:var(--card-bg);padding:24px;border-radius:12px;text-align:center;box-shadow:0 5px 18px rgba(0,0,0,0.25);transition:.3s;}
+.cards .card:hover{background:var(--card-hover);transform:translateY(-5px);}
+.cards .card i{font-size:40px;color:var(--accent);margin-bottom:10px;}
+.cards .card span{display:block;font-size:22px;font-weight:700;color:var(--text-light);}
+
+/* ===== Table & Form ===== */
 .form-box, .table-container{background:var(--card-bg);padding:22px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.25);}
 .form-box form{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:center;}
 .form-box input, .form-box select{padding:10px;border-radius:8px;border:none;outline:none;background:#2a2f42;color:#fff;}
@@ -66,38 +154,39 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
 .table-container table{width:100%;border-collapse:collapse;color:#fff;}
 .table-container th, .table-container td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.1);text-align:left;}
 .table-container th{color:var(--accent);}
-.mini-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.mini-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);}
+.table-container button{background:#e11d48;border:none;color:#fff;padding:8px 12px;border-radius:6px;font-weight:600;cursor:pointer;transition:.3s;}
+.table-container button:hover{background:#9f1239;}
 
-.admin-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:20px;}
-.admin-dashboard .card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--card-bg);color:var(--text-light);border-radius:12px;font-weight:600;font-size:16px;text-align:center;text-decoration:none;transition:.3s;box-shadow:0 5px 18px rgba(0,0,0,0.25);}
-.admin-dashboard .card i{font-size:40px;margin-bottom:12px;color:var(--accent);}
-.admin-dashboard .card:hover{background:var(--card-hover);transform:translateY(-5px);box-shadow:0 12px 28px rgba(0,0,0,0.35);}
-
+/* ===== Responsive ===== */
 @media(max-width:900px){
     .dashboard-container{grid-template-columns:1fr;padding:18px;gap:18px;}
     .sidebar{flex-direction:row;overflow-x:auto;}
     .sidebar a{margin:0 8px;}
-    .admin-dashboard{grid-template-columns:1fr;}
+    .cards{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 <div class="floaties" aria-hidden="true">
-  <span class="f1"></span>
-  <span class="f2"></span>
-  <span class="f3"></span>
+  <span class="f1"></span><span class="f2"></span><span class="f3"></span>
 </div>
 
 <div class="dashboard-container">
   <aside class="sidebar">
-    <div class="logo">ITAC</div>
+    <div class="logo" style="color: #fff;">ITAC</div>
+    <div class="profile">
+      <img src="../uploads/<?=$photo?>" onerror="this.src='../uploads/default.png';" alt="photo">
+      <h3><?=$prenom." ".$nom?></h3>
+      <p>Admin</p>
+    </div>
     <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="classes.php"><i class="fas fa-building"></i> Classes</a>
     <a href="matieres.php"><i class="fas fa-book"></i> Matières</a>
     <a href="affectations.php"><i class="fas fa-tasks"></i> Affectations</a>
     <a href="utilisateurs.php" class="active"><i class="fas fa-users-cog"></i> Utilisateurs</a>
     <a href="paiements.php"><i class="fas fa-credit-card"></i> Paiements</a>
-    <a href="profil.php"><i class="fas fa-users-cog"></i> Profil</a>
+    <a href="profil.php"><i class="fas fa-user-circle"></i> Profil</a>
     <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
   </aside>
 
@@ -105,6 +194,9 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
     <h2>Utilisateurs</h2>
     <?php if($msg = flash()): ?><div class="flash"><?=htmlspecialchars($msg)?></div><?php endif;?>
 
+   
+
+    <!-- ==== Formulaire ==== -->
     <div class="form-box">
       <form method="post" enctype="multipart/form-data">
         <select name="role_id" required>
@@ -115,21 +207,23 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
         <input name="phone" placeholder="Téléphone">
         <input name="email" placeholder="Email">
         <input name="username" placeholder="Nom d'utilisateur" required>
-        <input name="password" placeholder="Mot de passe (clair)" required>
+        <input name="password" placeholder="Mot de passe" required>
         <input type="file" name="photo" accept="image/*">
         <input type="hidden" name="action" value="add">
         <button>Ajouter</button>
       </form>
     </div>
 
+    <!-- ==== Tableau ==== -->
     <div class="table-container">
       <table>
         <thead><tr><th>#</th><th>Photo</th><th>Nom</th><th>Rôle</th><th>Username</th><th>Action</th></tr></thead>
         <tbody>
-          <?php foreach($users as $u): ?>
+          <?php foreach($users as $u): 
+              $userPhoto = "../uploads/".($u['photo'] ?: "default.png"); ?>
           <tr>
             <td><?=$u['id']?></td>
-            <td><img src="/itac/<?=htmlspecialchars($u['photo']?:'assets/uploads/default.png')?>" class="mini-avatar"></td>
+            <td><img src="<?=$userPhoto?>" onerror="this.src='../uploads/default.png';" class="mini-avatar"></td>
             <td><?=htmlspecialchars($u['prenom'].' '.$u['nom'])?></td>
             <td><?=htmlspecialchars($u['role_name'])?></td>
             <td><?=htmlspecialchars($u['username'])?></td>
@@ -137,22 +231,13 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
               <form method="post" style="display:inline">
                 <input type="hidden" name="id" value="<?=$u['id']?>">
                 <input type="hidden" name="action" value="delete">
-                <button onclick="return confirm('Supprimer?')">Supprimer</button>
+                <button onclick="return confirm('Supprimer cet utilisateur ?')"><i class="fas fa-trash-alt"></i> Supprimer</button>
               </form>
             </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-    </div>
-
-    <div class="admin-dashboard">
-      <a href="dashboard.php" class="card"><i class="fas fa-tachometer-alt"></i><br>Tableau de bord</a>
-      <a href="classes.php" class="card"><i class="fas fa-building"></i><br>Gérer Classes</a>
-      <a href="matieres.php" class="card"><i class="fas fa-book"></i><br>Gérer Matières</a>
-      <a href="affectations.php" class="card"><i class="fas fa-tasks"></i><br>Affectations</a>
-      <a href="utilisateurs.php" class="card"><i class="fas fa-users-cog"></i><br>Utilisateurs</a>
-      <a href="paiements.php" class="card"><i class="fas fa-credit-card"></i><br>Paiements</a>
     </div>
   </main>
 </div>

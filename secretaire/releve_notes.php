@@ -165,6 +165,7 @@ body{
         margin:0 8px;
     }
 }
+
 </style>
 </head>
 <body>
@@ -172,7 +173,7 @@ body{
     <!-- SIDEBAR -->
     <aside class="sidebar">
         
-    <div class="logo">ITAC</div>
+   <div class="logo" style="color: #fff;">ITAC</div>
     <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="inscriptions.php"><i class="fas fa-book"></i> Inscriptions</a>
     <a href="examens.php"><i class="fas fa-book"></i> Examens</a>

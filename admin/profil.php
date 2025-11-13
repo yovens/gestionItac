@@ -8,6 +8,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role_name'] !== 'admin') {
     exit;
 }
 
+$nom = $_SESSION['user']['nom'] ?? '';
+$prenom = $_SESSION['user']['prenom'] ?? '';
+$photo = $_SESSION['user']['photo'] ?? 'default.png'; 
 $id = $_SESSION['user']['id'];
 
 // Récupérer les infos du secrétaire
@@ -60,7 +63,12 @@ if (isset($_POST['update_photo'])) {
 
 <div class="dashboard-container">
   <aside class="sidebar">
-    <div class="logo">ITAC</div>
+          <div class="logo" style="color: #fff;">ITAC</div>
+     <div class="profile">
+      <img src="../uploads/<?=$photo?>" alt="photo">
+      <h3><?=$prenom." ".$nom?></h3>
+      <p>Admin</p>
+    </div>
     <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="classes.php"><i class="fas fa-building"></i> Classes</a>
     <a href="matieres.php"><i class="fas fa-book"></i> Matières</a>
@@ -92,6 +100,7 @@ if (isset($_POST['update_photo'])) {
     <div class="upload-form">
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="photo" required>
+            <br>
             <button type="submit" name="update_photo" class="btn"><i class="fas fa-camera"></i> Changer Photo</button>
         </form>
     </div>
@@ -149,7 +158,10 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0f2b,#1
     .cards{grid-template-columns:1fr;}
     .admin-dashboard{grid-template-columns:1fr;}
 }
-
+.sidebar .logo{text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:14px;}
+.sidebar .profile{text-align:center;margin-bottom:18px;}
+.sidebar .profile img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:2px solid var(--accent);}
+.sidebar .profile h3{font-size:18px;font-weight:600;}
 .main-content{
     padding:28px;
     display:flex;

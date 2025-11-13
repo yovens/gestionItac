@@ -210,7 +210,7 @@ $photo = $_SESSION['user']['photo'] ?? 'default.png'; // si pas de photo fournir
     <div class="top-actions">
     
       <div class="profile" title="Mon profil">
-        <img src="../assets/uploads/admin.jpg" alt="Photo de profil">
+      <img src="../uploads/<?=$photo?>" alt="photo">
         <div class="who"><?= htmlspecialchars($prenom . " " . $nom) ?></div>
       </div>
     </div>
@@ -221,20 +221,19 @@ $photo = $_SESSION['user']['photo'] ?? 'default.png'; // si pas de photo fournir
 
     <!-- Left compact panel -->
     <aside class="panel-left" aria-label="Profil et menu">
-      <div class="profile-large">
-        <img src="../assets/uploads/admin.jpg" alt="Photo de profil">
-        <div class="meta">
-          <h2><?= htmlspecialchars($prenom . ' ' . $nom) ?></h2>
-          <p>Étudiant • ITAC</p>
-        </div>
-      </div>
+      <div class="profile">
+      <img src="../uploads/<?=$photo?>" alt="photo">
+      <h3><?=$prenom." ".$nom?></h3>
+       <p>Étudiant • ITAC</p>
+    </div>
+      
 
       <nav class="student-menu" aria-label="Menu élève">
         <a href="dashboard.php">🏠 Tableau de bord</a>
         <a href="mes_notes.php">📚 Mes notes</a>
         <a href="mes_bulletins.php">📄 Mes bulletins</a>
-        <a href="paiements.php"><i class="fas fa-file-pdf"></i> ---> Paiements</a>
-        <a href="profil.php"><i class="fas fa-users-cog"></i> --->Profil</a>
+        <a href="paiements.php">💰 Paiements</a>
+    <a href="profil.php">⚙️ Profil</a>
         <a href="calendrier.php">📆 Calendrier</a>
       
     
